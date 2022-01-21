@@ -1,0 +1,15 @@
+:root {
+  --page-transition-duration: 400ms;
+  --page-bg-color: #efeff4;
+}
+
+body {
+  margin: 0;
+}
+
+.app {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}

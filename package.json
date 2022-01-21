@@ -1,0 +1,21 @@
+{
+  "name": "@bigflower/cra-template",
+  "version": "1.0.2",
+  "keywords": [
+    "cra-template",
+    "react",
+    "create-react-app",
+    "template",
+    "typescript"
+  ],
+  "description": "The base TypeScript template for Create React App.",
+  "author": "bigflower",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14"
+  },
+  "files": [
+    "template",
+    "template.json"
+  ]
+}
