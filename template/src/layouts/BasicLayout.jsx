@@ -4,6 +4,7 @@ function Index() {
   return (
     <div className="page">
       <div className="page-content">
+        {/* layout */}
         <div>
           <div>BasicLayout</div>
           <div>
@@ -15,8 +16,11 @@ function Index() {
           <div>
             <Link to="/about">To About</Link>
           </div>
+          <div>
+            <Link to="/nomatch">To No Match</Link>
+          </div>
         </div>
-        {/* something */}
+        {/* page */}
         <Outlet />
       </div>
     </div>
