@@ -1,39 +1,93 @@
-.pages {
+.pages-forward,
+.pages-backward,
+.pages-refresh {
   position: relative;
-  width: 100%;
-  height: 100%;
   overflow: hidden;
-}
+  --page-background-color: #efeff4;
+  --page-animation-duration: 400ms;
 
-.page {
-  box-sizing: border-box;
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  transform: none;
-  background-color: var(--page-bg-color);
-  z-index: 1;
+  &,
+  & > * {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    background-color: var(--page-background-color);
+    transform: none;
+    z-index: 1;
+  }
 
-  &.slide-enter,
-  &.slide-exit {
-    pointer-events: none;
+  & > * {
+    position: absolute;
+    left: 0;
+    top: 0;
   }
 }
 
-.page-content {
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
-  box-sizing: border-box;
-  height: 100%;
-  position: relative;
-  z-index: 1;
+.page-slide-enter,
+.page-slide-exit {
+  pointer-events: none;
 }
 
-.pages.forward .page.slide-enter {
-  animation: page-next-to-current var(--page-transition-duration) forwards;
+.pages-forward .page-slide-enter {
+  animation: page-next-to-current var(--page-animation-duration) forwards;
   z-index: 2;
+  &::before {
+    position: absolute;
+    top: 0;
+    width: 16px;
+    bottom: 0;
+    z-index: -1;
+    content: '';
+    opacity: 0;
+    right: 100%;
+    background: linear-gradient(
+      to right,
+      rgb(0 0 0 / 0%) 0%,
+      rgb(0 0 0 / 0%) 10%,
+      rgb(0 0 0 / 1%) 50%,
+      rgb(0 0 0 / 20%) 100%
+    );
+    animation: page-element-fade-in var(--page-animation-duration) forwards;
+  }
+}
+
+.pages-forward .page-slide-exit {
+  animation: page-current-to-previous var(--page-animation-duration) forwards;
+
+  &::after {
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: rgb(0 0 0 / 10%);
+    width: 100%;
+    bottom: 0;
+    content: '';
+    opacity: 0;
+    z-index: 10000;
+    animation: page-element-fade-in var(--page-animation-duration) forwards;
+  }
+}
+
+.pages-backward .page-slide-enter {
+  animation: page-previous-to-current var(--page-animation-duration) forwards;
+
+  &::after {
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: rgb(0 0 0 / 10%);
+    width: 100%;
+    bottom: 0;
+    content: '';
+    opacity: 0;
+    z-index: 10000;
+    animation: page-element-fade-out var(--page-animation-duration) forwards;
+  }
+}
+
+.pages-backward .page-slide-exit {
+  z-index: 2;
+  animation: page-current-to-next var(--page-animation-duration) forwards;
 
   &::before {
     position: absolute;
@@ -51,65 +105,7 @@
       rgb(0 0 0 / 1%) 50%,
       rgb(0 0 0 / 20%) 100%
     );
-    animation: page-element-fade-in var(--page-transition-duration) forwards;
-  }
-}
-
-.pages.forward .page.slide-exit {
-  animation: page-current-to-previous var(--page-transition-duration) forwards;
-
-  &::after {
-    position: absolute;
-    left: 0;
-    top: 0;
-    background: rgb(0 0 0 / 10%);
-    width: 100%;
-    bottom: 0;
-    content: '';
-    opacity: 0;
-    z-index: 10000;
-    animation: page-element-fade-in var(--page-transition-duration) forwards;
-  }
-}
-
-.pages.backward .page.slide-enter {
-  animation: page-previous-to-current var(--page-transition-duration) forwards;
-
-  &::after {
-    position: absolute;
-    left: 0;
-    top: 0;
-    background: rgb(0 0 0 / 10%);
-    width: 100%;
-    bottom: 0;
-    content: '';
-    opacity: 0;
-    z-index: 10000;
-    animation: page-element-fade-out var(--page-transition-duration) forwards;
-  }
-}
-
-.pages.backward .page.slide-exit {
-  z-index: 2;
-  animation: page-current-to-next var(--page-transition-duration) forwards;
-
-  &::before {
-    position: absolute;
-    top: 0;
-    width: 16px;
-    bottom: 0;
-    z-index: -1;
-    content: '';
-    opacity: 0;
-    right: 100%;
-    background: linear-gradient(
-      to right,
-      rgb(0 0 0 / 0%) 0%,
-      rgb(0 0 0 / 0%) 10%,
-      rgb(0 0 0 / 1%) 50%,
-      rgb(0 0 0 / 20%) 100%
-    );
-    animation: page-element-fade-out var(--page-transition-duration) forwards;
+    animation: page-element-fade-out var(--page-animation-duration) forwards;
   }
 }
 

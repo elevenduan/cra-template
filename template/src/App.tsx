@@ -1,10 +1,11 @@
 import RouterTransition from 'components/RouterTransition';
+import routes from 'routes';
 import './App.scss';
 
 function App() {
   return (
     <div className="app">
-      <RouterTransition />
+      <RouterTransition routes={routes} />
     </div>
   );
 }

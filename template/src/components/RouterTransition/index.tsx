@@ -1,14 +1,24 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRoutes, useLocation } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import routes from 'routes';
+import type { RouteObject } from 'react-router-dom';
 import './index.scss';
 
 // 记载页面index
 const getStateIdx = () => window?.history?.state?.idx;
 let stateIdxPrev = getStateIdx();
 
-function Index() {
+function Index({
+  routes,
+  timeout = 600,
+  effect = 'slide',
+  style
+}: {
+  routes: RouteObject[];
+  timeout?: number; // milliseconds
+  effect?: 'slide';
+  style?: React.CSSProperties & { '--page-background-color'?: string };
+}) {
   const location = useLocation();
   const [direction, setDirection] = useState('refresh');
 
@@ -29,8 +39,11 @@ function Index() {
   }, [location.key]);
 
   return (
-    <TransitionGroup className={`pages ${direction}`}>
-      <CSSTransition key={location.key} classNames="slide" timeout={400}>
+    <TransitionGroup
+      className={`pages-${direction}`}
+      style={Object.assign({ '--page-animation-duration': `${timeout}ms` }, style)}
+    >
+      <CSSTransition key={location.key} classNames={`page-${effect}`} timeout={timeout}>
         {useRoutes(routes, location)}
       </CSSTransition>
     </TransitionGroup>
