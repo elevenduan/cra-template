@@ -1,53 +1,112 @@
-import React, { useEffect, useState } from 'react';
-import { useRoutes, useLocation } from 'react-router-dom';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import type { RouteObject } from 'react-router-dom';
+import React, { useEffect, useState, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import './index.scss';
 
-// 记载页面index
-const getStateIdx = () => window?.history?.state?.idx;
-let stateIdxPrev = getStateIdx();
+type DirectionType = 'backward' | 'forward' | 'refresh';
+type ChildElement = React.ReactElement | null;
+type effectType = 'parallax' | 'fade' | 'dive' | 'cover';
+type StageType = 'enter' | 'entered' | 'exit' | 'exited';
+type StatusType = 'active' | 'done';
+type PropsType = {
+  children?: ChildElement;
+  timeout?: number; // ms
+  effect?: effectType;
+  pagesClassName?: string;
+  pageClassName?: string;
+  style?: React.CSSProperties & { '--rt-page-background-color'?: string };
+  onActive?: () => void;
+  onDone?: () => void;
+};
 
-function Index({
-  routes,
-  timeout = 600,
-  effect = 'slide',
-  style
-}: {
-  routes: RouteObject[];
-  timeout?: number; // milliseconds
-  effect?: 'slide';
-  style?: React.CSSProperties & { '--page-background-color'?: string };
-}) {
+// 页面顺序
+const getIdx = (): number => window?.history?.state?.idx;
+
+// 页面方向
+const getDirection = (prevIdx: number, nextIdx: number): DirectionType => {
+  const diff = nextIdx - prevIdx;
+  if (diff < 0) {
+    return 'backward';
+  }
+  if (diff > 0) {
+    return 'forward';
+  }
+  return 'refresh';
+};
+
+export default function RouterTransition(props: PropsType) {
+  const {
+    children,
+    timeout = 500,
+    effect = 'parallax',
+    pagesClassName = '',
+    pageClassName = '',
+    style,
+    onActive,
+    onDone
+  } = props;
   const location = useLocation();
-  const [direction, setDirection] = useState('refresh');
+  const prevIdxRef = useRef<number>(window?.history?.state?.idx);
+  const [direction, setDirection] = useState<DirectionType>('refresh');
+  const [childs, setChilds] = useState<[ChildElement, ChildElement]>([null, null]);
+  const enterRef = useRef<ChildElement & { className?: string }>(null);
+  const exitRef = useRef<ChildElement & { className?: string }>(null);
+  const [status, setStatus] = useState<StatusType>('done');
+
+  function getPageClassNames(stage: StageType) {
+    return `rt-page rt-page-${stage} ${pageClassName}`;
+  }
+
+  function cloneChild() {
+    const enterChild = React.createElement(
+      'div',
+      { className: getPageClassNames('enter'), key: location.key, ref: enterRef },
+      children
+    );
+    const exitChild = childs[0]
+      ? React.cloneElement(childs[0], { ref: exitRef, className: getPageClassNames('exit') })
+      : null;
+    setChilds([enterChild, exitChild]);
+    setStatus('active');
+    onActive?.();
+  }
+
+  function setPageDirection() {
+    const next = getIdx();
+    const dir = getDirection(prevIdxRef.current, next);
+    prevIdxRef.current = next;
+    setDirection(dir);
+  }
 
   useEffect(() => {
-    const stateIdxNext = getStateIdx();
-    const stateIdxDiff = stateIdxNext - stateIdxPrev;
-    const stateDirection = (() => {
-      if (stateIdxDiff < 0) {
-        return 'backward';
-      }
-      if (stateIdxDiff > 0) {
-        return 'forward';
-      }
-      return 'refresh';
-    })();
-    setDirection(stateDirection);
-    stateIdxPrev = stateIdxNext;
+    // 页面方向
+    setPageDirection();
+
+    // 复制页面
+    cloneChild();
   }, [location.key]);
 
+  useEffect(() => {
+    setTimeout(
+      () => {
+        if (enterRef.current) {
+          enterRef.current.className = getPageClassNames('entered');
+        }
+        if (exitRef.current) {
+          exitRef.current.className = getPageClassNames('exited');
+        }
+        setStatus('done');
+        onDone?.();
+      },
+      childs[0] && childs[1] ? timeout : 0
+    );
+  }, [childs]);
+
   return (
-    <TransitionGroup
-      className={`pages-${direction}`}
-      style={Object.assign({ '--page-animation-duration': `${timeout}ms` }, style)}
+    <div
+      className={`rt-pages rt-pages-${direction} rt-pages-${effect} ${pagesClassName}`}
+      style={Object.assign({ '--rt-page-transition-duration': `${timeout}ms` }, style)}
     >
-      <CSSTransition key={location.key} classNames={`page-${effect}`} timeout={timeout}>
-        {useRoutes(routes, location)}
-      </CSSTransition>
-    </TransitionGroup>
+      {status === 'done' ? childs[0] : childs}
+    </div>
   );
 }
-
-export default Index;

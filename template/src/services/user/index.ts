@@ -1,5 +1,6 @@
-import { mergeRequestConfig, request } from '../base';
+import { request } from '../base';
 import type { Response, RequestConfig } from '../base/types';
+
 // user types
 import type { ParamsUserLogin, ResponseUserLogin, ParamsUserAccount, ResponseUserAccount } from './types';
 
@@ -9,7 +10,7 @@ export function userLogin(params: ParamsUserLogin, config?: RequestConfig): Resp
     url: '/api/login',
     method: 'get',
     params,
-    ...mergeRequestConfig(config)
+    ...config
   });
 }
 
@@ -19,6 +20,6 @@ export function userAccount(params: ParamsUserAccount, config?: RequestConfig): 
     url: '/api/account',
     method: 'post',
     data: params,
-    ...mergeRequestConfig(config)
+    ...config
   });
 }

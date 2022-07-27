@@ -3,16 +3,12 @@ import merge from 'lodash/merge';
 import { Toast } from 'antd-mobile';
 import type { RequestConfig } from './types';
 
-const defaultRequestConfig = {
+const defaultConfig = {
   headers: { 'Content-Type': 'application/json' }
 };
 
-export function mergeRequestConfig(config?: RequestConfig) {
-  return merge(defaultRequestConfig, config);
-}
-
 export function request(config: RequestConfig) {
-  return axios(config)
+  return axios(merge(defaultConfig, config))
     .then((res) => {
       return res.data;
     })
