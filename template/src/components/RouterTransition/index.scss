@@ -1,6 +1,7 @@
 .rt-pages {
   --rt-page-transition-duration: 400ms;
-  --rt-page-background-color: #efeff4;
+  --rt-page-background-color: var(--app-background-color, #f8f8f8);
+
   position: relative;
   width: 100%;
   height: 100%;
@@ -18,7 +19,9 @@
   z-index: 1;
   opacity: 1;
   transform: none;
+  overflow: hidden;
   background-color: var(--rt-page-background-color);
+
   &.rt-page-enter,
   &.rt-page-exit {
     pointer-events: none;
@@ -40,6 +43,7 @@
   .rt-page-enter {
     animation: rt-parallax-next-to-current var(--rt-page-transition-duration) forwards;
   }
+
   .rt-page-exit {
     animation: rt-parallax-current-to-prev var(--rt-page-transition-duration) forwards;
   }
@@ -49,6 +53,7 @@
   .rt-page-exit {
     animation: rt-parallax-current-to-next var(--rt-page-transition-duration) forwards;
   }
+
   .rt-page-enter {
     animation: rt-parallax-prev-to-current var(--rt-page-transition-duration) forwards;
   }
@@ -58,6 +63,7 @@
   from {
     transform: translateX(100%);
   }
+
   to {
     transform: translateX(0%);
   }
@@ -66,6 +72,7 @@
   from {
     transform: translateX(0%);
   }
+
   to {
     transform: translateX(100%);
   }
@@ -74,6 +81,7 @@
   from {
     transform: translateX(0%);
   }
+
   to {
     transform: translateX(-20%);
   }
@@ -82,6 +90,7 @@
   from {
     transform: translateX(-20%);
   }
+
   to {
     transform: translateX(-0%);
   }
@@ -93,14 +102,17 @@
     opacity: 0 !important;
     animation: rt-fade-in var(--rt-page-transition-duration) forwards;
   }
+
   .rt-page-exit {
     animation: rt-fade-out var(--rt-page-transition-duration) forwards;
   }
 }
+
 .rt-pages-backward.rt-pages-fade {
   .rt-page-exit {
     animation: rt-fade-out var(--rt-page-transition-duration) forwards;
   }
+
   .rt-page-enter {
     animation: rt-fade-in var(--rt-page-transition-duration) forwards;
   }
@@ -109,9 +121,11 @@
   from {
     opacity: 0;
   }
+
   50% {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -120,9 +134,11 @@
   from {
     opacity: 1;
   }
+
   50% {
     opacity: 0;
   }
+
   to {
     opacity: 0;
   }
@@ -139,14 +155,17 @@
   .rt-page-enter {
     animation: rt-cover-next-to-current var(--rt-page-transition-duration) forwards;
   }
+
   .rt-page-exit {
     animation: rt-cover-current-to-prev var(--rt-page-transition-duration) forwards;
   }
 }
+
 .rt-pages-backward.rt-pages-cover {
   .rt-page-exit {
     animation: rt-cover-current-to-next var(--rt-page-transition-duration) forwards;
   }
+
   .rt-page-enter {
     animation: rt-cover-prev-to-current var(--rt-page-transition-duration) forwards;
   }
@@ -155,6 +174,7 @@
   from {
     transform: translateX(100%);
   }
+
   to {
     transform: translateX(0%);
   }
@@ -163,6 +183,7 @@
   from {
     transform: translateX(0%);
   }
+
   to {
     transform: translateX(100%);
   }
@@ -172,6 +193,7 @@
     transform: translateZ(0);
     opacity: 1;
   }
+
   to {
     transform: translateZ(-300px);
     opacity: 0.5;
@@ -182,11 +204,13 @@
     transform: translateZ(-300px);
     opacity: 0.5;
   }
+
   to {
     transform: translateZ(0);
     opacity: 1;
   }
 }
+
 // dive
 .rt-pages-forward.rt-pages-dive,
 .rt-pages-backward.rt-pages-dive {
@@ -198,14 +222,17 @@
   .rt-page-enter {
     animation: rt-dive-next-to-current var(--rt-page-transition-duration) forwards;
   }
+
   .rt-page-exit {
     animation: rt-dive-current-to-prev var(--rt-page-transition-duration) forwards;
   }
 }
+
 .rt-pages-backward.rt-pages-dive {
   .rt-page-exit {
     animation: rt-dive-current-to-next var(--rt-page-transition-duration) forwards;
   }
+
   .rt-page-enter {
     animation: rt-dive-prev-to-current var(--rt-page-transition-duration) forwards;
   }
@@ -215,22 +242,26 @@
     opacity: 0;
     transform: translateZ(-150px);
   }
+
   50% {
     opacity: 0;
   }
+
   to {
     opacity: 1;
-    transform: translateZ(0px);
+    transform: translateZ(0);
   }
 }
 @keyframes rt-dive-current-to-next {
   from {
     opacity: 1;
-    transform: translateZ(0px);
+    transform: translateZ(0);
   }
+
   50% {
     opacity: 0;
   }
+
   to {
     opacity: 0;
     transform: translateZ(-150px);
@@ -238,12 +269,14 @@
 }
 @keyframes rt-dive-current-to-prev {
   from {
-    transform: translateZ(0px);
+    transform: translateZ(0);
     opacity: 1;
   }
+
   50% {
     opacity: 0;
   }
+
   to {
     opacity: 0;
     transform: translateZ(150px);
@@ -254,11 +287,13 @@
     opacity: 0;
     transform: translateZ(150px);
   }
+
   50% {
     opacity: 0;
   }
+
   to {
     opacity: 1;
-    transform: translateZ(0px);
+    transform: translateZ(0);
   }
 }

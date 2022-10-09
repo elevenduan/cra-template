@@ -83,7 +83,7 @@ export default function RouterTransition(props: PropsType) {
 
     // 复制页面
     cloneChild();
-  }, [location.key]);
+  }, [location]);
 
   useEffect(() => {
     setTimeout(

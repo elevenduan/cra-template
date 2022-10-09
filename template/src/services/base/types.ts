@@ -1,8 +1,8 @@
-import { AxiosPromise, AxiosRequestConfig } from 'axios';
+import { AxiosRequestConfig } from 'axios';
 
-export type Response<T> = AxiosPromise<{
-  resCode: string;
-  resMsg: string;
+export type Response<T> = Promise<{
+  code: string;
+  message: string;
   data: T;
 }>;
 
