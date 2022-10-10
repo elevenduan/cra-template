@@ -14,7 +14,7 @@ function WrapElement({ title, element }: { title?: string; element: React.ReactN
   return <Suspense fallback={<PageLoading />}>{element}</Suspense>;
 }
 
-function suspenseElement(routes: (RouteObject & { title?: string })[]): RouteObject[] {
+function suspenseElement(routes: any[]): RouteObject[] {
   return routes.map(({ element, children, title, ...rest }) => ({
     element: element && <WrapElement element={element} title={title} />,
     children: children && children.length ? suspenseElement(children) : children,
