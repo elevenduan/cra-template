@@ -36,9 +36,10 @@
       "web-vitals": "^2.1.4"
     },
     "scripts": {
-      "start:no-mock": "MOCK=none react-scripts start",
-      "build:zip": "react-scripts build && sh ./zip.sh",
-      "prepare": "husky install"
+      "start:no-mock": "MOCK=none npm run start",
+      "build:zip": "npm run build && npm run zip",
+      "prepare": "husky install",
+      "zip": "sh ./zip.sh"
     },
     "lint-staged": {
       "**/*.{css,scss,sass,less}": "stylelint --fix",

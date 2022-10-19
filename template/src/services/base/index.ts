@@ -3,10 +3,10 @@ import merge from 'lodash/merge';
 import { Toast } from 'antd-mobile';
 import type { RequestConfig } from './types';
 
-const { REACT_APP_PROXY_URL, NODE_ENV } = process.env;
+const { REACT_APP_API_URL, NODE_ENV } = process.env;
 
 const defaultConfig = {
-  baseURL: NODE_ENV === 'production' ? REACT_APP_PROXY_URL : undefined,
+  baseURL: NODE_ENV === 'production' ? REACT_APP_API_URL : undefined,
   headers: { 'Content-Type': 'application/json' }
 };
 
