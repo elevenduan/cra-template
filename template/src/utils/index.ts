@@ -1,4 +1,4 @@
-import md5 from './md5';
+import { aes, md5 } from './crypto';
 import store from './store';
 
-export { md5, store };
+export { store, aes, md5 };

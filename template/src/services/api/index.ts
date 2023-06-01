@@ -1,11 +1,8 @@
 import { request } from '../base';
 import type { Response, RequestConfig } from '../base/types';
 
-// user types
-import type { ParamsUserLogin, ResponseUserLogin, ParamsUserAccount, ResponseUserAccount } from './types';
-
 /** 登录 GET /login */
-export function userLogin(params: ParamsUserLogin, config?: RequestConfig): Response<ResponseUserLogin> {
+export function userLogin(params: API.ReqUserLogin, config?: RequestConfig): Response<API.ResUserLogin> {
   return request({
     url: '/api/login',
     method: 'get',
@@ -15,7 +12,7 @@ export function userLogin(params: ParamsUserLogin, config?: RequestConfig): Resp
 }
 
 /** 账户 POST /account */
-export function userAccount(params: ParamsUserAccount, config?: RequestConfig): Response<ResponseUserAccount> {
+export function userAccount(params: API.ReqUserAccount, config?: RequestConfig): Response<API.ResUserAccount> {
   return request({
     url: '/api/account',
     method: 'post',

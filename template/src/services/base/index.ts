@@ -13,7 +13,23 @@ const defaultConfig = {
 export function request(config: RequestConfig) {
   return axios(merge(defaultConfig, config))
     .then((res) => {
-      return res.data;
+      const data = res.data;
+      // success
+      if (data.code === '0000') {
+        return res.data;
+      }
+      // error
+      return Promise.reject(res);
     })
-    .catch(() => Toast.show({ content: '请求异常' }));
+    .catch((err) => {
+      const res = err?.response || err;
+      const data = res.data;
+
+      // 网络请求异常，而非code码代表的服务处理失败
+      if (res?.status !== 200) {
+        Toast.show({ content: '请求异常' });
+      }
+
+      return Promise.reject(data);
+    });
 }
