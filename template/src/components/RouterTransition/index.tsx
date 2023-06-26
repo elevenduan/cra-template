@@ -1,19 +1,18 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, cloneElement } from 'react';
 import { useLocation } from 'react-router-dom';
 import './index.scss';
 
-type DirectionType = 'backward' | 'forward' | 'refresh';
 type ChildElement = React.ReactElement | null;
+type DirectionType = 'backward' | 'forward' | 'refresh';
 type effectType = 'parallax' | 'fade' | 'dive' | 'cover';
-type StageType = 'enter' | 'entered' | 'exit' | 'exited';
+type StageType = 'enter' | 'enter-done' | 'exit' | 'exit-done';
 type StatusType = 'active' | 'done';
 type PropsType = {
-  children?: ChildElement;
+  children: ChildElement;
   timeout?: number; // ms
   effect?: effectType;
   pagesClassName?: string;
   pageClassName?: string;
-  style?: React.CSSProperties & { '--rt-page-background-color'?: string };
   onActive?: () => void;
   onDone?: () => void;
 };
@@ -40,73 +39,68 @@ export default function RouterTransition(props: PropsType) {
     effect = 'parallax',
     pagesClassName = '',
     pageClassName = '',
-    style,
     onActive,
     onDone
   } = props;
   const location = useLocation();
-  const prevIdxRef = useRef<number>(window?.history?.state?.idx);
+  const prevIdxRef = useRef<number>(getIdx());
   const [direction, setDirection] = useState<DirectionType>('refresh');
-  const [childs, setChilds] = useState<[ChildElement, ChildElement]>([null, null]);
-  const enterRef = useRef<ChildElement & { className?: string }>(null);
-  const exitRef = useRef<ChildElement & { className?: string }>(null);
   const [status, setStatus] = useState<StatusType>('done');
+  const [enterClassName, setEnterClassName] = useState('');
+  const [exitClassName, setExitClassName] = useState('');
+  const [enterChild, setEnterChild] = useState<ChildElement>(null);
+  const [exitChild, setExitChild] = useState<ChildElement>(null);
 
-  function getPageClassNames(stage: StageType) {
+  // 页面类名
+  function getPageClassName(stage: StageType) {
     return `rt-page rt-page-${stage} ${pageClassName}`;
   }
 
-  function cloneChild() {
-    const enterChild = React.createElement(
-      'div',
-      { className: getPageClassNames('enter'), key: location.key, ref: enterRef },
-      children
-    );
-    const exitChild = childs[0]
-      ? React.cloneElement(childs[0], { ref: exitRef, className: getPageClassNames('exit') })
-      : null;
-    setChilds([enterChild, exitChild]);
-    setStatus('active');
-    onActive?.();
+  // 页面方向
+  function updateDirection() {
+    const nextIdx = getIdx();
+    setDirection(getDirection(prevIdxRef.current, nextIdx));
+    prevIdxRef.current = nextIdx;
   }
 
-  function setPageDirection() {
-    const next = getIdx();
-    const dir = getDirection(prevIdxRef.current, next);
-    prevIdxRef.current = next;
-    setDirection(dir);
+  // 页面内容
+  function updateChild() {
+    setStatus(enterChild ? 'active' : 'done');
+    setExitChild(enterChild ? cloneElement(enterChild) : null);
+    setEnterChild(children ? cloneElement(children) : null);
+    onActive?.();
   }
 
   useEffect(() => {
     // 页面方向
-    setPageDirection();
-
-    // 复制页面
-    cloneChild();
+    updateDirection();
+    // 更新页面
+    updateChild();
   }, [location]);
 
+  // 过渡状态
   useEffect(() => {
-    setTimeout(
-      () => {
-        if (enterRef.current) {
-          enterRef.current.className = getPageClassNames('entered');
-        }
-        if (exitRef.current) {
-          exitRef.current.className = getPageClassNames('exited');
-        }
+    if (status === 'active') {
+      setEnterClassName(getPageClassName('enter'));
+      setExitClassName(getPageClassName('exit'));
+      setTimeout(() => {
         setStatus('done');
         onDone?.();
-      },
-      childs[0] && childs[1] ? timeout : 0
-    );
-  }, [childs]);
+      }, timeout);
+    } else {
+      setEnterClassName(getPageClassName('enter-done'));
+      setExitClassName(getPageClassName('exit-done'));
+    }
+  }, [status]);
 
   return (
     <div
       className={`rt-pages rt-pages-${direction} rt-pages-${effect} ${pagesClassName}`}
-      style={Object.assign({ '--rt-page-transition-duration': `${timeout}ms` }, style)}
+      // @ts-ignore
+      style={{ '--rt-page-transition-duration': `${timeout}ms` }}
     >
-      {status === 'done' ? childs[0] : childs}
+      <div className={enterClassName}>{enterChild}</div>
+      {status === 'active' ? <div className={exitClassName}>{exitChild}</div> : null}
     </div>
   );
 }

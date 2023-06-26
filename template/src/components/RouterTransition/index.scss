@@ -1,5 +1,5 @@
 .rt-pages {
-  --rt-page-transition-duration: 400ms;
+  --rt-page-transition-duration: 500ms;
   --rt-page-background-color: var(--app-background-color, #f8f8f8);
 
   position: relative;
@@ -29,12 +29,15 @@
 }
 
 .rt-page-enter,
-.rt-page-entered,
-.rt-pages-backward .rt-page-exit {
+.rt-page-enter-done,
+.rt-pages-backward .rt-page-exit,
+.rt-pages-backward .rt-page-exit-done {
   z-index: 2;
 }
-
-.rt-pages-backward .rt-page-enter {
+.rt-page-exit,
+.rt-page-exit-done,
+.rt-pages-backward .rt-page-enter,
+.rt-pages-backward .rt-page-enter-done {
   z-index: 1;
 }
 

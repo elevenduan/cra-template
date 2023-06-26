@@ -1,25 +1,23 @@
-import React, { Suspense, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import RoutesObject from './RoutesObject';
 import type { RouteObject } from 'react-router-dom';
-// PageLoading
-import PageLoading from '../components/PageLoading';
 
 // Add Title
-function WrapElement({ title, element }: { title?: string; element: React.ReactNode }) {
+function TitleElement({ title, element }: { title?: string; element: React.ReactElement }) {
   useEffect(() => {
     if (title) {
       document.title = title;
     }
   }, []);
-  return <Suspense fallback={<PageLoading />}>{element}</Suspense>;
+  return element;
 }
 
-function suspenseElement(routes: any[]): RouteObject[] {
+function getRoutes(routes: any[]): RouteObject[] {
   return routes.map(({ element, children, title, ...rest }) => ({
-    element: element && <WrapElement element={element} title={title} />,
-    children: children && children.length ? suspenseElement(children) : children,
+    element: element && <TitleElement element={element} title={title} />,
+    children: children?.length ? getRoutes(children) : children,
     ...rest
   }));
 }
 
-export default suspenseElement(RoutesObject);
+export default getRoutes(RoutesObject);

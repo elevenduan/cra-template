@@ -7,10 +7,10 @@ function Index() {
       <div>
         <div>BasicLayout</div>
         <div>
-          <Link to="/login">To Login</Link>
+          <Link to="/">To Home</Link>
         </div>
         <div>
-          <Link to="/">To Home</Link>
+          <Link to="/login">To Login</Link>
         </div>
         <div>
           <Link to="/about">To About</Link>

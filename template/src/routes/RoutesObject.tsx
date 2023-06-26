@@ -1,13 +1,13 @@
-import { lazy } from 'react';
 // layout
-const BasicLayout = lazy(() => import('../layouts/BasicLayout'));
+import BasicLayout from '../layouts/BasicLayout';
+
 // no match
-const NoMatch = lazy(() => import('../pages/NoMatch'));
-/* pages */
-const Login = lazy(() => import('../pages/Login'));
-const Home = lazy(() => import('../pages/Home'));
-const About = lazy(() => import('../pages/About'));
-/* pages */
+import NoMatch from '../pages/NoMatch';
+
+// pages
+import Login from '../pages/Login';
+import Home from '../pages/Home';
+import About from '../pages/About';
 
 // routes
 const RoutesObject = [
