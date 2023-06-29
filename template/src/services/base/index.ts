@@ -1,5 +1,4 @@
 import axios from 'axios';
-import merge from 'lodash/merge';
 import { Toast } from 'antd-mobile';
 import type { RequestConfig } from './types';
 
@@ -7,11 +6,12 @@ const { REACT_APP_API_URL, NODE_ENV } = process.env;
 
 const defaultConfig = {
   baseURL: NODE_ENV === 'production' ? REACT_APP_API_URL : undefined,
-  headers: { 'Content-Type': 'application/json' }
+  headers: { 'Content-Type': 'application/json' } // application/x-www-form-urlencoded // multipart/form-data
 };
 
 export function request(config: RequestConfig) {
-  return axios(merge(defaultConfig, config))
+  const params = Object.assign({}, defaultConfig, config);
+  return axios(params)
     .then((res) => {
       const data = res.data;
       // success
