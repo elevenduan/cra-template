@@ -1,0 +1,17 @@
+.noMatch {
+  text-align: center;
+  padding-top: calc(50vh - 200px);
+  img {
+    height: 200px;
+    vertical-align: top;
+  }
+  .mainText {
+    font-size: 20px;
+    margin-top: 20px;
+  }
+  .subText {
+    font-size: 13px;
+    margin-top: 8px;
+    color: #999;
+  }
+}

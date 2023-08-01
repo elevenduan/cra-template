@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { Toast } from 'antd-mobile';
 import type { RequestConfig } from './types';
 
 const { REACT_APP_API_URL, NODE_ENV } = process.env;
@@ -27,7 +26,7 @@ export function request(config: RequestConfig) {
 
       // 网络请求异常，而非code码代表的服务处理失败
       if (res?.status !== 200) {
-        Toast.show({ content: '请求异常' });
+        console.log('网络请求异常');
       }
 
       return Promise.reject(data);
