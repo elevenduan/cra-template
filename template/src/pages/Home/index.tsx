@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { userLogin, userAccount } from 'services/api';
 import { useRequest } from 'ahooks';
+import PageContent from 'components/PageContent';
 
 function Index() {
   const { runAsync, loading } = useRequest(userAccount, { manual: true });
@@ -15,24 +16,22 @@ function Index() {
     });
   }, []);
   return (
-    <div>
+    <PageContent>
+      <div>Home Home Home</div>
       <div>
-        <div>Home Home Home</div>
-        <div>
-          <Link to="/">To Home</Link>
-        </div>
-        <div>
-          <Link to="/login">To Login</Link>
-        </div>
-        <div>
-          <Link to="/about">To About</Link>
-        </div>
-        <div>
-          <Link to="/nomatch">To No Match</Link>
-        </div>
+        <Link to="/">To Home</Link>
       </div>
-      <div>{loading ? 'loading...' : ''}</div>
-    </div>
+      <div>
+        <Link to="/login">To Login</Link>
+      </div>
+      <div>
+        <Link to="/about">To About</Link>
+      </div>
+      <div>
+        <Link to="/nomatch">To No Match</Link>
+      </div>
+      <div>{loading ? 'loading...' : 'done'}</div>
+    </PageContent>
   );
 }
 

@@ -1,5 +1,11 @@
+import PageContent from 'components/PageContent';
+
 function Index() {
-  return <div>About About About</div>;
+  return (
+    <PageContent>
+      <div>About About About</div>
+    </PageContent>
+  );
 }
 
 export default Index;

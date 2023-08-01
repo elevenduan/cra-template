@@ -8,16 +8,8 @@ body {
 }
 
 .app,
-.page-content {
+.view {
   position: relative;
   width: 100vw;
   height: 100vh;
-}
-
-.app {
-  overflow: hidden;
-}
-
-.page-content {
-  overflow: auto;
 }

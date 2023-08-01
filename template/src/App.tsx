@@ -6,7 +6,12 @@ import './App.scss';
 function App() {
   return (
     <div className="app">
-      <RouterTransition>{useRoutes(routes)}</RouterTransition>
+      {/* some layout */}
+
+      {/* view */}
+      <div className="view">
+        <RouterTransition>{useRoutes(routes)}</RouterTransition>
+      </div>
     </div>
   );
 }

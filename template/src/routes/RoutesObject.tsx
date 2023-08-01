@@ -1,6 +1,3 @@
-// layout
-import BasicLayout from '../layouts/BasicLayout';
-
 // no match
 import NoMatch from '../pages/NoMatch';
 
@@ -13,7 +10,6 @@ import About from '../pages/About';
 const RoutesObject = [
   {
     path: '/',
-    element: <BasicLayout />,
     children: [
       { index: true, element: <Home />, title: '首页' },
       { path: 'login', element: <Login />, title: '登录' },

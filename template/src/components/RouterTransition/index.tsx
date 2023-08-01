@@ -4,7 +4,7 @@ import './index.scss';
 
 type ChildElement = React.ReactElement | null;
 type DirectionType = 'backward' | 'forward' | 'refresh';
-type effectType = 'parallax' | 'fade' | 'dive' | 'cover';
+type effectType = 'parallax' | 'fade' | 'dive' | 'cover' | 'none';
 type StageType = 'enter' | 'enter-done' | 'exit' | 'exit-done';
 type StatusType = 'active' | 'done';
 type PropsType = {
@@ -36,8 +36,9 @@ function getPageClassNames(stage: StageType) {
   return `rt-page rt-page-${stage}`;
 }
 
-export default function RouterTransition(props: PropsType) {
-  const { children, timeout = 500, effect = 'parallax', pagesClassName = '', onActive, onDone } = props;
+export default function Index(props: PropsType) {
+  const { children, timeout: time = 500, effect = 'parallax', pagesClassName = '', onActive, onDone } = props;
+  const timeout = effect === 'none' ? 0 : time;
   const location = useLocation();
   const prevIdxRef = useRef<number>(getIdx());
   const [direction, setDirection] = useState<DirectionType>('refresh');

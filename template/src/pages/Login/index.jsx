@@ -1,5 +1,11 @@
+import PageContent from 'components/PageContent';
+
 function Index() {
-  return <div>Login Login Login</div>;
+  return (
+    <PageContent>
+      <div>Login Login Login</div>
+    </PageContent>
+  );
 }
 
 export default Index;
